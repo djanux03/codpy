@@ -1,35 +1,34 @@
-from urllib import request
-from bs4 import BeautifulSoup
-import cloudscraper
 import discord
 from discord.ext import commands
-TOKEN = "ODIxODU2NDI0NzYwOTY3MTY5.YFJzcQ.w8VpmqAjun8vBrgolTPDWrBtPKM"
+TOKEN = "ODIxODU2NDI0NzYwOTY3MTY5.YFJzcQ.k-KGO5qC7pzbLePZnWEMEbzen9M"
 bot = discord.Client()
 bot = commands.Bot(command_prefix="!")
 
 site = "https://cod.tracker.gg/warzone/profile/battlenet/"
+class codpy(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
+    def insertAfter(self, usersInput, context, newText):
+        i = usersInput.find(context)
+        return usersInput[:i + len(context)] + newText + usersInput[i + len(context):]
 
-def insertAfter(usersInput, context, newText):
- 
-  i = usersInput.find(context)
-  return usersInput[:i + len(context)] + newText + usersInput[i + len(context):]
+    @commands.Cog.listener()
+    async def on_message(self, message):
 
-@bot.event
-async def on_message(message):
+        if message.content.startswith("!"):
+            input = message.content
+            input = input.replace('!', '')
+            c = "#"
 
-    if message.content.startswith("!"):
-        input = message.content
-        input = input.replace('!', '')
-        c = "#"
-        
+                
         #print([pos for pos, char in enumerate(input) if char == c])
         
         print(input)
         #context = scraper(input)
         #print(context)      
    
-        newinput = insertAfter(input, c, "23")
+        newinput = self.insertAfter(input, c, "23")
         userinput = newinput.replace('#', '%')
         
         print(userinput)
@@ -48,4 +47,5 @@ async def on_message(message):
             num = div.find('span', class_='value').string
             await message.channel.send("```" +fact_title + ": " + num.string + "```")
 
+bot.add_cog(codpy(bot))
 bot.run(TOKEN)
