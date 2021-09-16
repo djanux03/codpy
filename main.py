@@ -4,8 +4,12 @@ import cloudscraper
 from PIL import Image, ImageDraw, ImageFont
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
+import os 
 
-TOKEN = "ODIxODU2NDI0NzYwOTY3MTY5.YFJzcQ._iZ-otj9yBqglbB2O86tRdMhF1E"
+load_dotenv('.env')
+
+
 bot = discord.Client()
 bot = commands.Bot(command_prefix="!")
 
@@ -48,8 +52,8 @@ class codpy(commands.Cog):
             num = div.find('span', class_='value').string
             self.data += fact_title + ": " + num + "\n"
         
-        #await message.channel.send("```" + self.data + "\n```")
-        
+        await message.channel.send("```" + self.data + "\n```")
+        '''
         with Image.open('background.png') as im:
             d = ImageDraw.Draw(im)
             font = ImageFont.truetype('LucidaGrande.ttf', 94)
@@ -61,6 +65,6 @@ class codpy(commands.Cog):
         with open('warzone.png', 'rb') as f:
             picture = discord.File(f)
             await message.channel.send(file=picture)
-
+        '''
 bot.add_cog(codpy(bot))
-bot.run(TOKEN)
+bot.run(os.getenv('BOT_TOKEN'))
